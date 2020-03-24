@@ -20,25 +20,36 @@ class App extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const newItem = {
-      id: this.state.id,
-      title: this.state.item
-    };
 
-    console.log(newItem);
+    if (this.state.item === "") {
+      return;
+    } else {
+      const newItem = {
+        id: this.state.id,
+        title: this.state.item
+      };
 
-    const updatedItem = [...this.state.items, newItem];
-    this.setState({
-      items: updatedItem,
-      item: "",
-      id: uuid.v4(),
-      editItem: false
-    });
+      const updatedItem = [...this.state.items, newItem];
+      this.setState({
+        items: updatedItem,
+        item: "",
+        id: uuid.v4(),
+        editItem: false
+      });
+    }
   };
 
   clearList = () => {
     this.setState({
       items: []
+    });
+  };
+
+  handleDelete = (id) => {
+    const filteredItem = this.state.items.filter(item => item.id !== id);
+
+    this.setState({
+      items: filteredItem
     })
   }
 
@@ -53,7 +64,7 @@ class App extends Component {
               handleChange={this.handleChange}
               handleSubmit={this.handleSubmit}
             />
-            <TodoList  items={this.state.items} clearList={this.clearList}/>
+            <TodoList items={this.state.items} clearList={this.clearList} handleDelete={this.handleDelete}/>
           </div>
         </div>
       </div>
